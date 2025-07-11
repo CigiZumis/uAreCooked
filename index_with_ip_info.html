@@ -1,0 +1,94 @@
+<!DOCTYPE html>
+<html lang="cs">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1" />
+  <title>You Are Done</title>
+  <style>
+    html, body {
+      margin: 0;
+      padding: 0;
+      height: 100%;
+      background-color: white;
+      display: flex;
+      justify-content: center;
+      align-items: center;
+      font-family: Arial, sans-serif;
+      flex-direction: column;
+    }
+
+    h1 {
+      color: blue;
+      font-size: 4em;
+      text-align: center;
+    }
+
+    #info {
+      margin-top: 20px;
+      text-align: center;
+    }
+  </style>
+</head>
+<body>
+
+  <h1>You Are Done</h1>
+
+  <div id="info">
+    <p>IP adresa: <span id="ip"></span></p>
+    <p>Město: <span id="city"></span></p>
+    <p>Název počítače: <span id="computerName"></span></p>
+    <p>Discord: <span id="discord"></span></p>
+  </div>
+
+  <div id="video" style="display: none;">
+    <iframe 
+      width="0" 
+      height="0" 
+      src="https://www.youtube.com/embed/CbXA188dcZI?autoplay=1&loop=1&playlist=CbXA188dcZI"
+      title="YouTube video player" 
+      frameborder="0" 
+      allow="autoplay; encrypted-media" 
+      allowfullscreen>
+    </iframe>
+  </div>
+
+  <script>
+    // Funkce pro získání IP a města pomocí ipify a ipinfo.io API
+    async function getIPAndLocation() {
+      try {
+        // Získání veřejné IP adresy
+        const ipResponse = await fetch('https://api.ipify.org?format=json');
+        const ipData = await ipResponse.json();
+        const ip = ipData.ip;
+
+        // Získání informací o městě podle IP adresy
+        const locationResponse = await fetch(`https://ipinfo.io/${ip}/json`);
+        const locationData = await locationResponse.json();
+        const city = locationData.city || 'Není k dispozici';
+
+        // Zobrazení IP a města na stránce
+        document.getElementById('ip').textContent = ip;
+        document.getElementById('city').textContent = city;
+
+        // Název počítače (to není možné získat přes JavaScript, ale simulujeme to)
+        document.getElementById('computerName').textContent = 'Neznámý počítač';
+
+        // Discord (opět není možné získat přímo, ale můžeme to nechat prázdné)
+        document.getElementById('discord').textContent = 'Není připojeno';
+
+      } catch (error) {
+        console.error('Chyba při získávání informací:', error);
+      }
+    }
+
+    // Spustit funkci pro získání IP a města
+    getIPAndLocation();
+
+    // Automatické přehrání po kliknutí pro podporu zvuku
+    document.addEventListener('click', function () {
+      document.getElementById('video').style.display = 'block';
+    }, { once: true });
+  </script>
+
+</body>
+</html>
